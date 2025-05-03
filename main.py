@@ -1,10 +1,8 @@
 import asyncio
 import logging
 from pyrogram import Client
-from config import LOGS_DIR, BASE_DIR
+from config import LOGS_DIR, API_ID, API_HASH, BOT_TOKEN
 from handlers import register_handlers
-from utils.system_checks import check_system_requirements
-from utils.file_utils import cleanup_temp_files
 
 # Configure logging
 logging.basicConfig(
@@ -20,12 +18,6 @@ logger = logging.getLogger(__name__)
 async def main():
     bot = None
     try:
-        # Verify system requirements
-        await check_system_requirements()
-        
-        # Start cleanup task
-        asyncio.create_task(cleanup_temp_files())
-        
         # Initialize bot
         bot = Client(
             "video_encoder_bot",
@@ -41,6 +33,7 @@ async def main():
         
         logger.info("Starting bot...")
         await bot.start()
+        print("Bot is running! Press Ctrl+C to stop")
         await asyncio.Event().wait()  # Run forever
         
     except Exception as e:
